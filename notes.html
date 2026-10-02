@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HAZUMI Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Modak&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #78dc54;
+      --green-dark: #42bc1e;
+      --yellow: #ffe91f;
+      --page: #f6f9ff;
+      --card: #ffffff;
+      --line: #e5eadf;
+      --text: #1f2520;
+      --muted: #8a8f89;
+      --danger: #ff7373;
+      --shadow: 0 16px 38px rgba(89, 115, 79, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+    html,
+    body {
+      width: 100%;
+      min-width: 1180px;
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      overflow: hidden;
+      color: var(--text);
+      background: var(--page);
+      font-family: Arial, sans-serif;
+    }
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+    button {
+      cursor: pointer;
+    }
+    .notes-app {
+      width: 100%;
+      height: 100dvh;
+      padding: 18px 18px 18px 12px;
+      display: grid;
+      grid-template-columns: 260px 330px minmax(560px, 1fr);
+      gap: 18px;
+      overflow: hidden;
+    }
+    /* sIDEBAR  */
+.hazumi-sidebar {
+  width: 260px;
+  height: 100%;
+  min-height: 0;
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 43px;
+  box-shadow:
+    0 18px 45px rgba(66, 92, 57, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  overflow: hidden;
+}
+/* Brand */
+.hazumi-brand {
+  height: 88px;
+  flex: 0 0 88px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 8px;
+
+  color: #000000;
+  text-decoration: none;
+}
+
+.hazumi-brand img {
+  width: 62px;
+  height: 62px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.hazumi-brand-title {
+  margin-left: 1px;
+  color: #000000;
+  font-family: "Modak", system-ui;
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.hazumi-brand-subtitle {
+  margin-top: 6px;
+  margin-left: 1px;
+  color: #000000;
+  font-family: "Modak", system-ui;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Menu */
+.hazumi-menu {
+  min-height: 0;
+  flex: 1;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+.hazumi-menu::-webkit-scrollbar {
+  display: none;
+}
+.hazumi-menu-item {
+  position: relative;
+  width: 232px;
+  height: 58px;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 13px;
+  color: #111111;
+  text-decoration: none;
+  border-radius: 17px;
+  overflow: hidden;
+  transition:
+    background 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+.hazumi-menu-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 4px;
+  height: 0;
+  background: #78dc54;
+  border-radius: 999px;
+  transform: translateY(-50%);
+  transition: height 0.22s ease;
+}
+.hazumi-menu-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 15px;
+  transition:
+    background 0.22s ease,
+    transform 0.22s ease;
+}
+.hazumi-menu-icon img {
+  width: 32px;
+  height: 32px;
+  display: block;
+  object-fit: contain;
+  transition:
+    transform 0.22s ease,
+    filter 0.22s ease;
+}
+.hazumi-menu-text {
+  color: #000000;
+  font-family: "Modak", system-ui;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    color 0.22s ease,
+    transform 0.22s ease;
+}
+/* Hover */
+.hazumi-menu-item:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(237, 243, 235, 0.95) 0%,
+    rgba(235, 253, 231, 0.95) 100%
+  );
+  transform: translateX(3px);
+  box-shadow: 0 8px 20px rgba(120, 220, 84, 0.12);
+}
+.hazumi-menu-item:hover::before {
+  height: 30px;
+}
+.hazumi-menu-item:hover .hazumi-menu-icon {
+  background: rgba(120, 220, 84, 0.16);
+}
+.hazumi-menu-item:hover .hazumi-menu-icon img {
+  transform: scale(1.07) rotate(-3deg);
+}
+.hazumi-menu-item:hover .hazumi-menu-text {
+  color: #35a918;
+  transform: translateX(2px);
+}
+/* Active */
+.hazumi-menu-item.active {
+  background: linear-gradient(
+    90deg,
+    rgba(237, 243, 235, 1) 0%,
+    rgba(235, 253, 231, 1) 100%
+  );
+  box-shadow:
+    0 8px 20px rgba(120, 220, 84, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+.hazumi-menu-item.active::before {
+  height: 34px;
+}
+.hazumi-menu-item.active .hazumi-menu-icon {
+  background: rgba(120, 220, 84, 0.18);
+}
+.hazumi-menu-item.active .hazumi-menu-text {
+  color: #2ea714;
+}
+/* Click feeling */
+.hazumi-menu-item:active {
+  transform: translateX(3px) scale(0.985);
+}
+    /* Notes jagsaalt */
+    .notes-library {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+    }
+    .library-header {
+      padding: 25px 22px 16px;
+    }
+    .library-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .library-title {
+      margin: 0;
+      font-family: "Modak", system-ui;
+      font-size: 31px;
+      font-weight: 400;
+    }
+    .new-note-button {
+      width: 42px;
+      height: 42px;
+      color: #ffffff;
+      font-size: 29px;
+      line-height: 1;
+      background: var(--green);
+      border: 0;
+      border-radius: 50%;
+      box-shadow: 0 8px 20px rgba(120, 220, 84, 0.28);
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+    .new-note-button:hover {
+      background: var(--green-dark);
+      transform: scale(1.06) rotate(4deg);
+    }
+    .search-wrap {
+      position: relative;
+      margin-top: 18px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      color: #9b9f9a;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .note-search {
+      width: 100%;
+      height: 42px;
+      padding: 0 14px 0 39px;
+      color: var(--text);
+      background: #f4f6f3;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      outline: none;
+    }
+    .note-search:focus {
+      background: #ffffff;
+      border-color: rgba(120, 220, 84, 0.65);
+      box-shadow: 0 0 0 3px rgba(120, 220, 84, 0.12);
+    }
+    .note-list {
+      min-height: 0;
+      padding: 2px 12px 18px;
+      margin: 0;
+      overflow-y: auto;
+      list-style: none;
+      scrollbar-width: thin;
+      scrollbar-color: var(--green) #edf1eb;
+    }
+    .note-list::-webkit-scrollbar {
+      width: 8px;
+    }
+    .note-list::-webkit-scrollbar-thumb {
+      background: var(--green);
+      border-radius: 999px;
+    }
+    .note-list::-webkit-scrollbar-track {
+      background: #edf1eb;
+      border-radius: 999px;
+    }
+    .note-card {
+      position: relative;
+      padding: 15px 42px 15px 16px;
+      margin: 7px 0;
+      background: #ffffff;
+      border: 1px solid #ebeee8;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+    }
+    .note-card:hover {
+      border-color: #cfe9c6;
+      transform: translateY(-1px);
+    }
+    .note-card.active {
+      background: #effbe9;
+      border-color: #a8e894;
+    }
+    .note-card-title {
+      overflow: hidden;
+      color: #202520;
+      font-size: 16px;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .note-card-preview {
+      min-height: 18px;
+      margin-top: 7px;
+      overflow: hidden;
+      color: #8a8f89;
+      font-size: 13px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .note-card-date {
+      margin-top: 8px;
+      color: #a6aaa5;
+      font-size: 11px;
+    }
+    .note-card-delete {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      width: 27px;
+      height: 27px;
+      display: grid;
+      place-items: center;
+      color: #a1a5a0;
+      font-size: 20px;
+      line-height: 1;
+      background: transparent;
+      border: 0;
+      border-radius: 50%;
+      opacity: 0;
+      transition: color 0.18s ease, background 0.18s ease, opacity 0.18s ease;
+    }
+    .note-card:hover .note-card-delete,
+    .note-card.active .note-card-delete {
+      opacity: 1;
+    }
+    .note-card-delete:hover {
+      color: #ffffff;
+      background: var(--danger);
+    }
+    .empty-list {
+      padding: 50px 24px;
+      color: #9aa098;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    /* Editor */
+    .editor-shell {
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.82);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+    }
+    .editor-topbar {
+      min-height: 74px;
+      padding: 15px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .editor-heading {
+      font-family: "Modak", system-ui;
+      font-size: 20px;
+      white-space: nowrap;
+    }
+    .save-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .save-dot {
+      width: 9px;
+      height: 9px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(120, 220, 84, 0.12);
+    }
+    .toolbar {
+      min-height: 58px;
+      padding: 9px 16px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      overflow-x: auto;
+      background: rgba(250, 252, 249, 0.94);
+      border-bottom: 1px solid var(--line);
+      scrollbar-width: thin;
+    }
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .toolbar-separator {
+      width: 1px;
+      height: 28px;
+      margin: 0 4px;
+      background: #dfe4dc;
+    }
+    .tool-button,
+    .tool-select,
+    .highlight-control {
+      height: 36px;
+      color: #3b403a;
+      background: #ffffff;
+      border: 1px solid #dfe5dc;
+      border-radius: 9px;
+    }
+    .tool-button {
+      min-width: 36px;
+      padding: 0 10px;
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+      font-weight: 700;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+    .tool-button:hover,
+    .tool-button.active {
+      color: #2b8f11;
+      background: #effbe9;
+      border-color: #b9e9aa;
+    }
+    .tool-select {
+      max-width: 140px;
+      padding: 0 10px;
+      outline: none;
+    }
+    .tool-select:focus {
+      border-color: var(--green);
+    }
+    .highlight-control {
+      position: relative;
+      width: 42px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+    .highlight-control span {
+      pointer-events: none;
+      font-weight: 800;
+      text-decoration: underline;
+      text-decoration-color: #ffe55c;
+      text-decoration-thickness: 5px;
+      text-underline-offset: 2px;
+    }
+    .highlight-control input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .editor-body {
+      min-height: 0;
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--green) #edf1eb;
+    }
+    .editor-body::-webkit-scrollbar {
+      width: 9px;
+    }
+    .editor-body::-webkit-scrollbar-thumb {
+      background: var(--green);
+      border-radius: 999px;
+    }
+    .editor-body::-webkit-scrollbar-track {
+      background: #edf1eb;
+    }
+    .paper {
+      width: min(820px, calc(100% - 72px));
+      min-height: calc(100vh - 190px);
+      padding: 54px 12px 100px;
+      margin: 0 auto;
+    }
+    .note-title-input {
+      width: 100%;
+      padding: 0;
+      color: #202520;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.15;
+      background: transparent;
+      border: 0;
+      outline: none;
+    }
+    .note-title-input::placeholder {
+      color: #c4c8c2;
+    }
+    .note-meta {
+      margin: 13px 0 28px;
+      color: #9aa098;
+      font-size: 12px;
+    }
+    .note-editor {
+      min-height: 430px;
+      color: #2c312c;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 19px;
+      line-height: 1.85;
+      outline: none;
+      overflow-wrap: anywhere;
+    }
+    .note-editor:empty::before {
+      content: attr(data-placeholder);
+      color: #b7bbb5;
+      pointer-events: none;
+    }
+    .note-editor p {
+      margin: 0 0 1em;
+    }
+    .note-editor ul,
+    .note-editor ol {
+      padding-left: 1.5em;
+    }
+    @media (max-width: 1250px) and (min-width: 1025px) {
+      html,
+      body {
+        min-width: 1180px;
+      }
+      .notes-app {
+        grid-template-columns: 260px 300px minmax(520px, 1fr);
+        gap: 12px;
+        padding: 12px;
+      }
+      .hazumi-sidebar {
+        height: 100%;
+        padding: 18px 14px;
+      }
+      .hazumi-menu {
+        margin-top: 22px;
+        gap: 7px;
+      }
+    }
+    @media (max-width: 1024px) {
+      html,
+      body {
+        width: 100%;
+        min-width: 0;
+        min-height: 100%;
+        height: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background:
+          radial-gradient(circle at 86% 4%, rgba(120, 220, 84, 0.22), transparent 26%),
+          radial-gradient(circle at 10% 22%, rgba(255, 233, 31, 0.13), transparent 28%),
+          var(--page);
+      }
+      body {
+        padding: 0;
+      }
+      .notes-app {
+        width: 100%;
+        min-width: 0;
+        min-height: 100dvh;
+        height: auto;
+        padding: 14px 14px 104px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        overflow: visible;
+      }
+      /* dood nav */
+      .hazumi-sidebar {
+        display: block !important;
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        top: auto;
+        z-index: 9999;
+        width: auto;
+        height: 76px;
+        min-height: 0;
+        margin: 0;
+        padding: 8px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.95);
+        border-radius: 28px;
+        box-shadow:
+          0 18px 45px rgba(66, 92, 57, 0.18),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        overflow: hidden;
+      }
+      .hazumi-brand {
+        display: none !important;
+      }
+      .hazumi-menu {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 5px;
+        overflow: visible;
+      }
+      .hazumi-menu-item:nth-child(6) {
+        display: none !important;
+      }
+      .hazumi-menu-item {
+        position: relative;
+        width: auto;
+        height: 60px;
+        min-height: 0;
+        padding: 6px 2px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        color: #7b8278;
+        text-decoration: none;
+        border-radius: 22px;
+        background: transparent;
+        box-shadow: none;
+        transform: none;
+        transition:
+          background 0.18s ease,
+          color 0.18s ease,
+          transform 0.18s ease;
+      }
+      .hazumi-menu-item::before {
+        display: none;
+      }
+      .hazumi-menu-icon {
+        width: 28px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: transparent;
+      }
+      .hazumi-menu-icon img {
+        width: 25px;
+        height: 25px;
+        display: block;
+        object-fit: contain;
+      }
+      .hazumi-menu-text {
+        max-width: 100%;
+        color: inherit;
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        font-weight: 800;
+        line-height: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .hazumi-menu-item:hover {
+        transform: none;
+        box-shadow: none;
+      }
+      .hazumi-menu-item:active {
+        transform: scale(0.94);
+      }
+      .hazumi-menu-item.active {
+        color: #2ea714;
+        background: linear-gradient(
+          180deg,
+          rgba(237, 243, 235, 1) 0%,
+          rgba(235, 253, 231, 1) 100%
+        );
+        box-shadow:
+          0 8px 20px rgba(120, 220, 84, 0.16),
+          inset 0 1px 0 rgba(255, 255, 255, 0.85);
+      }
+      .hazumi-menu-item.active .hazumi-menu-icon {
+        background: rgba(120, 220, 84, 0.16);
+      }
+      .hazumi-menu-item.active .hazumi-menu-icon img {
+        transform: scale(1.05);
+      }
+      /* NOTES LIB */
+      .notes-library {
+        width: 100%;
+        min-width: 0;
+        min-height: 0;
+        max-height: 390px;
+        flex: none;
+        border-radius: 30px;
+        overflow: hidden;
+      }
+      .library-header {
+        padding: 20px 18px 14px;
+      }
+      .library-title {
+        font-size: clamp(36px, 12vw, 52px);
+        line-height: 0.95;
+      }
+      .new-note-button {
+        width: 46px;
+        height: 46px;
+        flex: 0 0 46px;
+        font-size: 32px;
+      }
+      .search-wrap {
+        margin-top: 14px;
+      }
+      .note-search {
+        height: 44px;
+        border-radius: 15px;
+      }
+      .note-list {
+        max-height: 220px;
+        padding: 2px 12px 16px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .note-card {
+        padding: 14px 42px 14px 15px;
+        margin: 7px 0;
+        border-radius: 17px;
+      }
+      .note-card-title {
+        font-size: 15px;
+      }
+      .note-card-preview {
+        font-size: 12px;
+      }
+      .note-card-delete {
+        width: 29px;
+        height: 29px;
+        opacity: 1;
+      }
+      /* EDITOR*/
+      .editor-shell {
+        width: 100%;
+        min-width: 0;
+        min-height: 680px;
+        height: auto;
+        flex: none;
+        border-radius: 30px;
+        overflow: hidden;
+      }
+      .editor-topbar {
+        min-height: 62px;
+        padding: 14px 16px;
+        gap: 10px;
+      }
+      .editor-heading {
+        font-size: 19px;
+      }
+      .save-status {
+        font-size: 11px;
+      }
+      .toolbar {
+        min-height: 54px;
+        padding: 8px 12px;
+        gap: 6px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .toolbar-group {
+        gap: 5px;
+        flex: 0 0 auto;
+      }
+      .toolbar-separator {
+        height: 26px;
+        margin: 0 2px;
+      }
+      .tool-button,
+      .tool-select,
+      .highlight-control {
+        height: 35px;
+        border-radius: 10px;
+      }
+      .tool-button {
+        min-width: 35px;
+        padding: 0 9px;
+        font-size: 14px;
+      }
+      .tool-select {
+        max-width: 118px;
+        padding: 0 8px;
+        font-size: 13px;
+      }
+      .highlight-control {
+        width: 39px;
+      }
+      .editor-body {
+        min-height: 0;
+        height: auto;
+        overflow-y: visible;
+      }
+      .paper {
+        width: 100%;
+        min-height: 520px;
+        padding: 32px 18px 90px;
+        margin: 0;
+      }
+      .note-title-input {
+        font-size: clamp(34px, 10vw, 46px);
+        line-height: 1.1;
+      }
+      .note-meta {
+        margin: 10px 0 22px;
+        font-size: 11px;
+      }
+      .note-editor {
+        min-height: 390px;
+        font-size: 17px;
+        line-height: 1.75;
+      }
+    }
+    /*TABLETiPad 769px–1024px дээр арай roomy layout */
+    @media (max-width: 1024px) and (min-width: 769px) {
+      .notes-app {
+        padding: 18px 18px 108px;
+        gap: 18px;
+      }
+      .notes-library {
+        max-height: 430px;
+        border-radius: 34px;
+      }
+      .library-header {
+        padding: 24px 24px 16px;
+      }
+      .library-title {
+        font-size: 52px;
+      }
+      .note-list {
+        max-height: 260px;
+        padding: 4px 16px 18px;
+      }
+      .note-card {
+        padding: 16px 46px 16px 18px;
+        border-radius: 18px;
+      }
+      .editor-shell {
+        min-height: 720px;
+        border-radius: 34px;
+      }
+      .editor-topbar {
+        min-height: 68px;
+        padding: 16px 20px;
+      }
+      .toolbar {
+        min-height: 58px;
+        padding: 9px 16px;
+      }
+      .paper {
+        min-height: 560px;
+        padding: 42px 34px 100px;
+      }
+      .note-title-input {
+        font-size: 46px;
+      }
+      .note-editor {
+        min-height: 420px;
+        font-size: 18px;
+      }
+      .hazumi-sidebar {
+        left: 18px;
+        right: 18px;
+        bottom: 18px;
+        height: 80px;
+        padding: 9px;
+        border-radius: 30px;
+      }
+      .hazumi-menu-item {
+        height: 62px;
+        border-radius: 23px;
+      }
+      .hazumi-menu-icon {
+        width: 30px;
+        height: 30px;
+      }
+      .hazumi-menu-icon img {
+        width: 26px;
+        height: 26px;
+      }
+      .hazumi-menu-text {
+        font-size: 11px;
+      }
+    }
+    @media (max-width: 420px) {
+      .notes-app {
+        padding: 12px 10px 100px;
+        gap: 14px;
+      }
+      .notes-library,
+      .editor-shell {
+        border-radius: 26px;
+      }
+      .notes-library {
+        max-height: 370px;
+      }
+      .library-header {
+        padding: 18px 15px 13px;
+      }
+      .library-title {
+        font-size: clamp(34px, 13vw, 48px);
+      }
+      .new-note-button {
+        width: 44px;
+        height: 44px;
+        flex-basis: 44px;
+      }
+      .note-list {
+        max-height: 205px;
+        padding: 2px 10px 14px;
+      }
+      .editor-shell {
+        min-height: 640px;
+      }
+      .editor-topbar {
+        min-height: 58px;
+        padding: 12px 14px;
+      }
+      .editor-heading {
+        font-size: 18px;
+      }
+      .save-status {
+        font-size: 10px;
+      }
+      .toolbar {
+        padding: 8px 10px;
+      }
+      .tool-select {
+        max-width: 106px;
+      }
+      .paper {
+        min-height: 500px;
+        padding: 28px 15px 86px;
+      }
+      .note-title-input {
+        font-size: clamp(32px, 13vw, 42px);
+      }
+      .note-editor {
+        min-height: 360px;
+        font-size: 16px;
+      }
+      .hazumi-sidebar {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        height: 72px;
+        padding: 7px;
+        border-radius: 26px;
+      }
+      .hazumi-menu {
+        gap: 4px;
+      }
+      .hazumi-menu-item {
+        height: 58px;
+        padding: 5px 1px;
+        border-radius: 20px;
+      }
+      .hazumi-menu-icon {
+        width: 26px;
+        height: 26px;
+      }
+      .hazumi-menu-icon img {
+        width: 23px;
+        height: 23px;
+      }
+      .hazumi-menu-text {
+        font-size: 9px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="notes-app">
+ <!-- Sidebar -->
+<aside class="hazumi-sidebar">
+  <a href="dashboard.php" class="hazumi-brand">
+    <img src="images/logo.png" alt="Hazumi logo">
+    <div>
+      <div class="hazumi-brand-title">HAZUMI</div>
+      <div class="hazumi-brand-subtitle">Momentum starts today!</div>
+    </div>
+   </a>
+  <nav class="hazumi-menu" aria-label="Main menu">
+    <a href="dashboard.php" class="hazumi-menu-item">
+      <span class="hazumi-menu-icon">
+        <img src="images/icons/home.png" alt="">
+      </span>
+      <span class="hazumi-menu-text">Dashboard</span>
+    </a>
+    <a href="habittracker.html" class="hazumi-menu-item">
+      <span class="hazumi-menu-icon">
+        <img src="images/icons/habits.png" alt="">
+      </span>
+      <span class="hazumi-menu-text">Habits</span>
+    </a>
+    <a href="todolist.html" class="hazumi-menu-item">
+      <span class="hazumi-menu-icon">
+        <img src="images/icons/list.png" alt="">
+      </span>
+      <span class="hazumi-menu-text">To-do List</span>
+    </a>
+    <a href="calendar.html" class="hazumi-menu-item">
+      <span class="hazumi-menu-icon">
+        <img src="images/icons/calendar.png" alt="">
+      </span>
+      <span class="hazumi-menu-text">Calendar</span>
+    </a>
+    <a href="notes.html" class="hazumi-menu-item active" aria-current="page">
+      <span class="hazumi-menu-icon">
+        <img src="images/icons/notes.png" alt="">
+      </span>
+      <span class="hazumi-menu-text">Notes</span>
+    </a>
+    <a href="setting.php" class="hazumi-menu-item">
+    <span class="hazumi-menu-icon">
+    <img src="images/icons/settings.png" alt="">
+    </span>
+   <span class="hazumi-menu-text">Settings</span>
+  </a>
+  </nav>
+</aside>
+    <!-- Saved notes -->
+    <section class="notes-library">
+      <div class="library-header">
+        <div class="library-title-row">
+          <h1 class="library-title">My Notes</h1>
+          <button class="new-note-button" id="newNoteButton" type="button" aria-label="Create a new note" title="New note">+</button>
+        </div>
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+          <input class="note-search" id="noteSearch" type="search" placeholder="Search notes..." autocomplete="off">
+        </div>
+      </div>
+      <ul class="note-list" id="noteList"></ul>
+    </section>
+    <!-- Note editor -->
+    <section class="editor-shell">
+      <div class="editor-topbar">
+        <div class="editor-heading">Share your thoughts</div>
+        <div class="save-status" id="saveStatus">
+          <span class="save-dot"></span>
+          <span>Saved</span>
+        </div>
+      </div>
+      <div class="toolbar" id="toolbar" aria-label="Text formatting toolbar">
+        <div class="toolbar-group">
+          <select class="tool-select" id="blockStyle" aria-label="Text style" title="Text style">
+            <option value="p">Normal</option>
+            <option value="h1">Heading 1</option>
+            <option value="h2">Heading 2</option>
+            <option value="blockquote">Quote</option>
+          </select>
+          <select class="tool-select" id="fontName" aria-label="Font" title="Font">
+            <option value="Georgia">Georgia</option>
+            <option value="Arial">Arial</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Courier New">Courier New</option>
+          </select>
+        </div>
+        <span class="toolbar-separator"></span>
+        <div class="toolbar-group">
+          <button class="tool-button" type="button" data-command="bold" title="Bold"><strong>B</strong></button>
+          <button class="tool-button" type="button" data-command="italic" title="Italic"><em>I</em></button>
+          <button class="tool-button" type="button" data-command="underline" title="Underline"><u>U</u></button>
+        </div>
+        <span class="toolbar-separator"></span>
+        <div class="toolbar-group">
+          <button class="tool-button" type="button" data-command="insertUnorderedList" title="Bullet list">• List</button>
+          <button class="tool-button" type="button" data-command="insertOrderedList" title="Numbered list">1. List</button>
+        </div>
+        <span class="toolbar-separator"></span>
+        <div class="toolbar-group">
+          <label class="highlight-control" title="Highlight selected text">
+            <span>A</span>
+            <input id="highlightColor" type="color" value="#fff176" aria-label="Highlight color">
+          </label>
+          <button class="tool-button" id="removeFormatButton" type="button" title="Clear formatting">Tx</button>
+        </div>
+      </div>
+      <div class="editor-body">
+        <article class="paper">
+          <input class="note-title-input" id="noteTitle" type="text" placeholder="Note title" autocomplete="off">
+          <div class="note-meta" id="noteMeta">Edited just now</div>
+          <div
+            class="note-editor"
+            id="noteEditor"
+            contenteditable="true"
+            spellcheck="true"
+            data-placeholder="Start writing your note..."
+          ></div>
+        </article>
+      </div>
+    </section>
+  </main>
+  <script src="assets/js/notes.js"></script>
+</body>
+</html>

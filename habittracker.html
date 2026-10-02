@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HAZUMI - Habit Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Modak&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #78dc54;
+      --green-dark: #35a918;
+      --page: #f6f9ff;
+      --card: #ffffff;
+      --text: #1f2520;
+      --muted: #8a8f89;
+      --line: #e5eadf;
+      --danger: #ff7373;
+      --soft-green: #effbea;
+      --shadow: 0 18px 45px rgba(66, 92, 57, 0.08);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+    body {
+      min-width: 1180px;
+      height: 100dvh;
+      overflow: hidden;
+      color: var(--text);
+      background: var(--page);
+      font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+    button,
+    input {
+      font: inherit;
+    }
+    button {
+      cursor: pointer;
+    }
+    .habit-page {
+      width: 100%;
+      height: 100dvh;
+      padding: 18px 18px 18px 12px;
+      display: grid;
+      grid-template-columns: 260px minmax(620px, 1fr) 300px;
+      gap: 18px;
+      overflow: hidden;
+    }
+    /* SIDEBAR MENU*/
+    .hazumi-sidebar {
+      width: 260px;
+      height: 100%;
+      min-height: 0;
+      padding: 18px 14px;
+      display: flex;
+      flex-direction: column;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 43px;
+      box-shadow:
+        0 18px 45px rgba(66, 92, 57, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.85);
+      overflow: hidden;
+    }
+    .hazumi-brand {
+      height: 88px;
+      flex: 0 0 88px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 0 8px;
+      color: #000000;
+      text-decoration: none;
+    }
+    .hazumi-brand img {
+      width: 62px;
+      height: 62px;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+    .hazumi-brand-title {
+      margin-left: 1px;
+      color: #000000;
+      font-family: "Modak", system-ui;
+      font-size: 23px;
+      font-weight: 400;
+      line-height: 1;
+    }
+    .hazumi-brand-subtitle {
+      margin-top: 6px;
+      margin-left: 1px;
+      color: #000000;
+      font-family: "Modak", system-ui;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .hazumi-menu {
+      min-height: 0;
+      flex: 1;
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+    }
+    .hazumi-menu::-webkit-scrollbar {
+      display: none;
+    }
+    .hazumi-menu-item {
+      position: relative;
+      width: 232px;
+      height: 58px;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 13px;
+      color: #111111;
+      text-decoration: none;
+      border-radius: 17px;
+      overflow: hidden;
+      transition:
+        background 0.22s ease,
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
+    }
+    .hazumi-menu-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 4px;
+      height: 0;
+      background: var(--green);
+      border-radius: 999px;
+      transform: translateY(-50%);
+      transition: height 0.22s ease;
+    }
+    .hazumi-menu-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      border-radius: 15px;
+      transition:
+        background 0.22s ease,
+        transform 0.22s ease;
+    }
+    .hazumi-menu-icon img {
+      width: 32px;
+      height: 32px;
+      display: block;
+      object-fit: contain;
+      transition:
+        transform 0.22s ease,
+        filter 0.22s ease;
+    }
+    .hazumi-menu-text {
+      color: #000000;
+      font-family: "Modak", system-ui;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1;
+      white-space: nowrap;
+      transition:
+        color 0.22s ease,
+        transform 0.22s ease;
+    }
+    .hazumi-menu-item:hover {
+      background: linear-gradient(
+        90deg,
+        rgba(237, 243, 235, 0.95) 0%,
+        rgba(235, 253, 231, 0.95) 100%
+      );
+      transform: translateX(3px);
+      box-shadow: 0 8px 20px rgba(120, 220, 84, 0.12);
+    }
+    .hazumi-menu-item:hover::before {
+      height: 30px;
+    }
+    .hazumi-menu-item:hover .hazumi-menu-icon {
+      background: rgba(120, 220, 84, 0.16);
+    }
+    .hazumi-menu-item:hover .hazumi-menu-icon img {
+      transform: scale(1.07) rotate(-3deg);
+    }
+    .hazumi-menu-item:hover .hazumi-menu-text {
+      color: var(--green-dark);
+      transform: translateX(2px);
+    }
+    .hazumi-menu-item.active {
+      background: linear-gradient(
+        90deg,
+        rgba(237, 243, 235, 1) 0%,
+        rgba(235, 253, 231, 1) 100%
+      );
+      box-shadow:
+        0 8px 20px rgba(120, 220, 84, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.75);
+    }
+    .hazumi-menu-item.active::before {
+      height: 34px;
+    }
+    .hazumi-menu-item.active .hazumi-menu-icon {
+      background: rgba(120, 220, 84, 0.18);
+    }
+    .hazumi-menu-item.active .hazumi-menu-text {
+      color: #2ea714;
+    }
+    .hazumi-menu-item:active {
+      transform: translateX(3px) scale(0.985);
+    }
+    /* MAIN*/
+    .tracker-shell {
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+    }
+    .tracker-header {
+      min-height: 94px;
+      flex: 0 0 auto;
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .header-copy {
+      min-width: 0;
+    }
+    .eyebrow {
+      margin-bottom: 3px;
+      color: var(--green-dark);
+      font-family: "Modak", system-ui;
+      font-size: 15px;
+    }
+    .tracker-title-input {
+      width: min(430px, 100%);
+      color: #151c15;
+      background: transparent;
+      border: 0;
+      outline: 0;
+      font-family: "Modak", system-ui;
+      font-size: clamp(32px, 3vw, 44px);
+      line-height: 1;
+    }
+    .tracker-subtitle {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-shrink: 0;
+    }
+    .nav-button,
+    .today-button,
+    .add-button {
+      height: 40px;
+      border: 0;
+      border-radius: 13px;
+      transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease;
+    }
+    .nav-button {
+      width: 40px;
+      display: grid;
+      place-items: center;
+      color: #465044;
+      background: #f1f5ef;
+      font-size: 24px;
+      font-weight: 800;
+    }
+    .today-button {
+      padding: 0 15px;
+      color: #465044;
+      background: #f1f5ef;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .add-button {
+      padding: 0 17px;
+      color: #ffffff;
+      background: var(--green);
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 9px 20px rgba(120, 220, 84, 0.25);
+    }
+    .nav-button:hover,
+    .today-button:hover {
+      background: #e8f7e3;
+      transform: translateY(-1px);
+    }
+    .add-button:hover {
+      background: var(--green-dark);
+      transform: translateY(-1px);
+    }
+    .month-bar {
+      min-height: 62px;
+      flex: 0 0 auto;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .month-title {
+      color: #212921;
+      font-size: 22px;
+      font-weight: 850;
+      letter-spacing: -0.4px;
+    }
+
+    .add-form {
+      width: min(420px, 100%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px;
+      background: #f4f7f2;
+      border: 1px solid #e3eadf;
+      border-radius: 15px;
+    }
+    .add-form input {
+      min-width: 0;
+      flex: 1;
+      height: 36px;
+      padding: 0 10px;
+      color: var(--text);
+      background: transparent;
+      border: 0;
+      outline: 0;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .add-form button {
+      width: 36px;
+      height: 36px;
+      color: #ffffff;
+      background: var(--green);
+      border: 0;
+      border-radius: 12px;
+      font-size: 23px;
+      line-height: 1;
+    }
+    .add-form button:hover {
+      background: var(--green-dark);
+    }
+    .grid-wrap {
+      min-height: 0;
+      flex: 1;
+      overflow: auto;
+      background: #ffffff;
+      scrollbar-width: thin;
+      scrollbar-color: var(--green) #edf1eb;
+    }
+    .grid-wrap::-webkit-scrollbar {
+      height: 9px;
+      width: 9px;
+    }
+    .grid-wrap::-webkit-scrollbar-thumb {
+      background: var(--green);
+      border-radius: 999px;
+    }
+    .grid-wrap::-webkit-scrollbar-track {
+      background: #edf1eb;
+    }
+    .habit-grid {
+      display: grid;
+      align-content: start;
+      min-height: 100%;
+      background: #ffffff;
+    }
+
+    .habit-cell {
+      min-width: 0;
+      height: 64px;
+      display: grid;
+      place-items: center;
+      background: #ffffff;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .habit-day {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      height: 64px;
+      color: #757d73;
+      background: #fbfcfb;
+      font-size: 11px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .habit-day span {
+      display: block;
+      color: #242c23;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .habit-day small {
+      display: block;
+      margin-top: 5px;
+      color: #99a097;
+      font-size: 10px;
+    }
+
+    .habit-day.today {
+      color: var(--green-dark);
+      background: #f3fdef;
+    }
+
+    .habit-day.today span {
+      width: 27px;
+      height: 27px;
+
+      display: grid;
+      place-items: center;
+
+      color: #ffffff;
+      background: var(--green);
+      border-radius: 50%;
+    }
+    .habit-sticky-left {
+      position: sticky;
+      left: 0;
+      z-index: 6;
+      justify-content: stretch;
+      background: #ffffff;
+      box-shadow: 1px 0 0 var(--line);
+    }
+    .habit-day.habit-sticky-left {
+      top: 0;
+      z-index: 8;
+      background: #fbfcfb;
+    }
+    .habit-name {
+      padding: 0 12px;
+      justify-items: stretch;
+    }
+    .habit-name-row {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .habit-name-input {
+      min-width: 0;
+      flex: 1;
+      height: 38px;
+      padding: 0 10px;
+      color: #202820;
+      background: #f7faf5;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      outline: 0;
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+    .habit-name-input:focus {
+      background: #ffffff;
+      border-color: rgba(120, 220, 84, 0.65);
+      box-shadow: 0 0 0 3px rgba(120, 220, 84, 0.12);
+    }
+
+    .delete-habit {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      color: #a2a8a0;
+      background: transparent;
+      border: 0;
+      border-radius: 50%;
+      font-size: 20px;
+      opacity: 0;
+      transition:
+        opacity 0.16s ease,
+        color 0.16s ease,
+        background 0.16s ease;
+    }
+
+    .habit-name:hover .delete-habit,
+    .habit-name:focus-within .delete-habit {
+      opacity: 1;
+    }
+
+    .delete-habit:hover {
+      color: #ffffff;
+      background: var(--danger);
+    }
+
+    .check-button {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: transparent;
+      background: #f1f5ef;
+      border: 0;
+      border-radius: 50%;
+      transition:
+        background 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+    }
+    .check-button:hover {
+      background: #e7f7e1;
+      transform: scale(1.05);
+    }
+    .check-button.checked {
+      color: #ffffff;
+      background: var(--green);
+      box-shadow: 0 8px 18px rgba(120, 220, 84, 0.28);
+      animation: pop 0.22s ease;
+    }
+    .check-button.checked::before {
+      content: "✓";
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    @keyframes pop {
+      0% {
+        transform: scale(0.78);
+      }
+
+      70% {
+        transform: scale(1.13);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    /* RIGHT PANEL */
+
+    .insight-panel {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow: hidden;
+    }
+    .stat-card,
+    .habit-summary-card {
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      flex: 0 0 auto;
+    }
+    .stat-card {
+      min-height: 120px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+    }
+    .stat-value {
+      color: #1f281f;
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+    .habit-summary-card {
+      min-height: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .summary-header {
+      padding: 20px 18px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .summary-title {
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: -0.2px;
+    }
+
+    .summary-subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .habit-summary-list {
+      min-height: 0;
+      flex: 1;
+      padding: 10px 10px 16px;
+      overflow-y: auto;
+      list-style: none;
+      scrollbar-width: thin;
+      scrollbar-color: var(--green) #edf1eb;
+    }
+
+    .summary-item {
+      padding: 13px 12px;
+      margin: 6px 0;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .summary-item-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .summary-count {
+      color: var(--green-dark);
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      height: 7px;
+      margin-top: 10px;
+      overflow: hidden;
+      background: #edf1eb;
+      border-radius: 999px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: var(--progress);
+      background: var(--green);
+      border-radius: inherit;
+    }
+
+    .empty-state {
+      padding: 34px 18px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1280px) {
+      .habit-page {
+        grid-template-columns: 260px minmax(620px, 1fr);
+      }
+      .insight-panel {
+        display: none;
+      }
+    }
+
+    @media (max-height: 760px) {
+      .habit-page {
+        padding: 12px;
+        gap: 12px;
+      }
+      .hazumi-sidebar {
+        padding: 16px 14px;
+      }
+      .hazumi-brand {
+        height: 80px;
+        flex-basis: 80px;
+      }
+      .hazumi-menu {
+        margin-top: 10px;
+        gap: 4px;
+      }
+      .hazumi-menu-item {
+        height: 54px;
+        min-height: 54px;
+      }
+      .tracker-header {
+        min-height: 78px;
+        padding: 14px 18px;
+      }
+      .tracker-subtitle {
+        display: none;
+      }
+      .month-bar {
+        min-height: 54px;
+        padding: 8px 18px;
+      }
+      .habit-cell,
+      .habit-day {
+        height: 56px;
+      }
+    }
+
+    /*    RESPONSIVE*/
+    @media (max-width: 768px) {
+      html,
+      body {
+        width: 100%;
+        min-width: 0;
+        min-height: 100%;
+        height: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background:
+          radial-gradient(circle at 86% 4%, rgba(120, 220, 84, 0.22), transparent 26%),
+          radial-gradient(circle at 10% 22%, rgba(255, 233, 31, 0.13), transparent 28%),
+          var(--page);
+      }
+      body {
+        padding: 0;
+      }
+      .habit-page {
+        width: 100%;
+        min-width: 0;
+        min-height: 100dvh;
+        height: auto;
+        padding: 14px 14px 104px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        overflow: visible;
+      }
+      /* MOBILE BOTTOM NAVIGATION*/
+
+      .hazumi-sidebar {
+        display: block !important;
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        top: auto;
+        z-index: 9999;
+        width: auto;
+        height: 76px;
+        min-height: 0;
+        margin: 0;
+        padding: 8px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.95);
+        border-radius: 28px;
+        box-shadow:
+          0 18px 45px rgba(66, 92, 57, 0.18),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        overflow: hidden;
+      }
+      .hazumi-brand {
+        display: none !important;
+      }
+      .hazumi-menu {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 5px;
+        overflow: visible;
+      }
+      .hazumi-menu-item:nth-child(6) {
+        display: none !important;
+      }
+      .hazumi-menu-item {
+        position: relative;
+        width: auto;
+        height: 60px;
+        min-height: 0;
+        padding: 6px 2px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        color: #7b8278;
+        text-decoration: none;
+        border-radius: 22px;
+        background: transparent;
+        box-shadow: none;
+        transform: none;
+        transition:
+          background 0.18s ease,
+          color 0.18s ease,
+          transform 0.18s ease;
+      }
+
+      .hazumi-menu-item::before {
+        display: none;
+      }
+
+      .hazumi-menu-icon {
+        width: 28px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: transparent;
+      }
+
+      .hazumi-menu-icon img {
+        width: 25px;
+        height: 25px;
+        display: block;
+        object-fit: contain;
+      }
+
+      .hazumi-menu-text {
+        max-width: 100%;
+        color: inherit;
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        font-weight: 800;
+        line-height: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .hazumi-menu-item:hover {
+        transform: none;
+        box-shadow: none;
+      }
+
+      .hazumi-menu-item:active {
+        transform: scale(0.94);
+      }
+
+      .hazumi-menu-item.active {
+        color: #2ea714;
+        background: linear-gradient(
+          180deg,
+          rgba(237, 243, 235, 1) 0%,
+          rgba(235, 253, 231, 1) 100%
+        );
+        box-shadow:
+          0 8px 20px rgba(120, 220, 84, 0.16),
+          inset 0 1px 0 rgba(255, 255, 255, 0.85);
+      }
+
+      .hazumi-menu-item.active .hazumi-menu-icon {
+        background: rgba(120, 220, 84, 0.16);
+      }
+
+      .hazumi-menu-item.active .hazumi-menu-icon img {
+        transform: scale(1.05);
+      }
+
+      /* TRACKER MAIN CARD*/
+      .tracker-shell {
+        width: 100%;
+        min-width: 0;
+        min-height: 0;
+        height: auto;
+        border-radius: 30px;
+        overflow: hidden;
+      }
+
+      .tracker-header {
+        min-height: 0;
+        padding: 20px 18px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 16px;
+      }
+      .eyebrow {
+        font-size: 14px;
+      }
+      .tracker-title-input {
+        width: 100%;
+        font-size: clamp(36px, 12vw, 54px);
+        line-height: 0.95;
+      }
+
+      .tracker-subtitle {
+        margin-top: 8px;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .header-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 44px 1fr 44px;
+        gap: 8px;
+      }
+      .nav-button,
+      .today-button,
+      .add-button {
+        height: 44px;
+        border-radius: 15px;
+      }
+      .nav-button {
+        width: 44px;
+      }
+      .today-button {
+        padding: 0 12px;
+      }
+      .add-button {
+        grid-column: 1 / -1;
+        height: 46px;
+        padding: 0 16px;
+        font-size: 14px;
+      }
+
+      .month-bar {
+        min-height: 0;
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .month-title {
+        font-size: 22px;
+      }
+      .add-form {
+        width: 100%;
+        padding: 6px;
+        border-radius: 16px;
+      }
+      .add-form input {
+        height: 40px;
+      }
+      .add-form button {
+        width: 40px;
+        height: 40px;
+      }
+      .grid-wrap {
+        width: 100%;
+        height: 520px;
+        min-height: 520px;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .habit-grid {
+        min-height: auto;
+      }
+      .habit-cell {
+        height: 58px;
+      }
+      .habit-day {
+        height: 58px;
+      }
+      .habit-sticky-left {
+        left: 0;
+      }
+      .habit-name {
+        padding: 0 8px;
+      }
+      .habit-name-row {
+        gap: 7px;
+      }
+      .habit-name-input {
+        height: 36px;
+        padding: 0 9px;
+        font-size: 13px;
+      }
+
+      .delete-habit {
+        width: 28px;
+        height: 28px;
+        opacity: 1;
+      }
+
+      .check-button {
+        width: 32px;
+        height: 32px;
+      }
+
+      /* INSIGHT PANEL*/
+
+      .insight-panel {
+        width: 100%;
+        min-width: 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        overflow: visible;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .stat-card {
+        min-height: 104px;
+        padding: 16px;
+        border-radius: 24px;
+      }
+
+      .stat-label {
+        font-size: 11px;
+      }
+
+      .stat-value {
+        font-size: 32px;
+      }
+
+      .habit-summary-card {
+        min-height: 360px;
+        max-height: 460px;
+        border-radius: 26px;
+      }
+
+      .summary-header {
+        padding: 18px 16px 13px;
+      }
+
+      .habit-summary-list {
+        padding: 10px 10px 16px;
+      }
+    }
+    @media (max-width: 420px) {
+      .habit-page {
+        padding: 12px 10px 100px;
+        gap: 14px;
+      }
+      .tracker-shell {
+        border-radius: 26px;
+      }
+      .tracker-header {
+        padding: 18px 15px 14px;
+      }
+      .tracker-title-input {
+        font-size: clamp(34px, 13vw, 48px);
+      }
+      .tracker-subtitle {
+        font-size: 12px;
+      }
+      .header-actions {
+        grid-template-columns: 42px 1fr 42px;
+      }
+      .nav-button,
+      .today-button {
+        height: 42px;
+      }
+      .nav-button {
+        width: 42px;
+      }
+      .add-button {
+        height: 44px;
+      }
+      .month-bar {
+        padding: 12px 14px;
+      }
+      .grid-wrap {
+        height: 480px;
+        min-height: 480px;
+      }
+      .habit-cell,
+      .habit-day {
+        height: 54px;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .stat-card {
+        min-height: 96px;
+        padding: 14px;
+      }
+      .stat-value {
+        font-size: 29px;
+      }
+      .hazumi-sidebar {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        height: 72px;
+        padding: 7px;
+        border-radius: 26px;
+      }
+
+      .hazumi-menu {
+        gap: 4px;
+      }
+
+      .hazumi-menu-item {
+        height: 58px;
+        padding: 5px 1px;
+        border-radius: 20px;
+      }
+      .hazumi-menu-icon {
+        width: 26px;
+        height: 26px;
+      }
+      .hazumi-menu-icon img {
+        width: 23px;
+        height: 23px;
+      }
+      .hazumi-menu-text {
+        font-size: 9px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="habit-page">
+  <!-- Sidebar -->
+<aside class="hazumi-sidebar">
+  <a href="dashboard.php" class="hazumi-brand">
+    <img src="images/logo.png" alt="Hazumi logo">
+    <div>
+      <div class="hazumi-brand-title">HAZUMI</div>
+      <div class="hazumi-brand-subtitle">Momentum starts today!</div>
+    </div>
+  </a>
+  <nav class="hazumi-menu" aria-label="Main menu">
+    <a href="dashboard.php" class="hazumi-menu-item">
+      <span class="hazumi-menu-icon">
+        <img src="images/icons/home.png" alt="">
+      </span>
+      <span class="hazumi-menu-text">Dashboard</span>
+    </a>
+    <a href="habittracker.html" class="hazumi-menu-item active" aria-current="page">
+      <span class="hazumi-menu-icon">
+        <img src="images/icons/habits.png" alt="">
+      </span>
+      <span class="hazumi-menu-text">Habits</span>
+    </a>
+    <a href="todolist.html" class="hazumi-menu-item">
+      <span class="hazumi-menu-icon">
+        <img src="images/icons/list.png" alt="">
+      </span>
+      <span class="hazumi-menu-text">To-do List</span>
+    </a>
+    <a href="calendar.html" class="hazumi-menu-item">
+      <span class="hazumi-menu-icon">
+        <img src="images/icons/calendar.png" alt="">
+      </span>
+      <span class="hazumi-menu-text">Calendar</span>
+    </a>
+    <a href="notes.html" class="hazumi-menu-item">
+      <span class="hazumi-menu-icon">
+        <img src="images/icons/notes.png" alt="">
+      </span>
+      <span class="hazumi-menu-text">Notes</span>
+    </a>
+    <a href="setting.php" class="hazumi-menu-item">
+    <span class="hazumi-menu-icon">
+    <img src="images/icons/settings.png" alt="">
+    </span>
+   <span class="hazumi-menu-text">Settings</span>
+  </a>
+  </nav>
+</aside>
+    <!-- Main tracker -->
+    <section class="tracker-shell">
+      <header class="tracker-header">
+        <div class="header-copy">
+          <div class="eyebrow">Daily rhythm</div>
+          <input
+            class="tracker-title-input"
+            id="habitPageTitle"
+            type="text"
+            value="Habit tracker"
+            aria-label="Habit tracker title"
+          >
+          <p class="tracker-subtitle">
+            This page uses the same saved habits and checks as your dashboard.
+          </p>
+        </div>
+
+        <div class="header-actions">
+          <button class="nav-button" id="previousMonthButton" type="button" aria-label="Previous month">‹</button>
+          <button class="today-button" id="todayButton" type="button">Today</button>
+          <button class="nav-button" id="nextMonthButton" type="button" aria-label="Next month">›</button>
+          <button class="add-button" id="focusAddHabitButton" type="button">+ Habit</button>
+        </div>
+      </header>
+
+      <div class="month-bar">
+        <div class="month-title" id="monthTitle">Month Year</div>
+
+        <form class="add-form" id="addHabitForm">
+          <input
+            id="habitInput"
+            type="text"
+            placeholder="Add a new habit..."
+            autocomplete="off"
+          >
+          <button type="submit" aria-label="Add habit">+</button>
+        </form>
+      </div>
+
+      <div class="grid-wrap">
+        <div class="habit-grid" id="habitGrid"></div>
+      </div>
+    </section>
+    <!-- Insights -->
+    <aside class="insight-panel">
+      <div class="stats-grid">
+        <section class="stat-card">
+          <div class="stat-label">Today Done</div>
+          <div class="stat-value" id="todayDoneCount">0</div>
+        </section>
+        <section class="stat-card">
+          <div class="stat-label">Best Streak</div>
+          <div class="stat-value" id="bestStreakCount">0</div>
+        </section>
+        <section class="stat-card">
+          <div class="stat-label">Month</div>
+          <div class="stat-value" id="monthProgressCount">0%</div>
+        </section>
+        <section class="stat-card">
+          <div class="stat-label">Habits</div>
+          <div class="stat-value" id="habitCount">0</div>
+        </section>
+      </div>
+      <section class="habit-summary-card">
+        <div class="summary-header">
+          <div class="summary-title">Monthly Overview</div>
+          <div class="summary-subtitle">Checked days by habit</div>
+        </div>
+        <ul class="habit-summary-list" id="habitSummaryList"></ul>
+      </section>
+    </aside>
+  </main>
+  <script src="assets/js/habittracker.js"></script>
+</body>
+</html>

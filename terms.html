@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HAZUMI - Terms</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Modak&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root {
+      --green: #7be13b;
+      --green-dark: #4fae19;
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.74);
+      --glass: rgba(255, 255, 255, 0.09);
+      --glass-strong: rgba(255, 255, 255, 0.14);
+      --border: rgba(255, 255, 255, 0.15);
+      --shadow: 0 25px 65px rgba(0, 0, 0, 0.38);
+    }
+    html,
+    body {
+      min-height: 100%;
+    }
+    body {
+      min-height: 100vh;
+      color: var(--text);
+      font-family: "Nunito", Arial, sans-serif;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 14% 12%, rgba(123, 225, 59, 0.36) 0%, rgba(123, 225, 59, 0.12) 22%, transparent 42%),
+        radial-gradient(circle at 86% 24%, rgba(123, 225, 59, 0.44) 0%, rgba(123, 225, 59, 0.13) 19%, transparent 34%),
+        radial-gradient(circle at 42% 92%, rgba(123, 225, 59, 0.32) 0%, rgba(123, 225, 59, 0.09) 20%, transparent 38%),
+        #030507;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.13;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.24) 0.8px, transparent 0.8px);
+      background-size: 7px 7px;
+      mix-blend-mode: soft-light;
+    }
+    .page {
+      width: min(100%, 1120px);
+      margin: 0 auto;
+      padding: 32px 24px 56px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 42px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #ffffff;
+      text-decoration: none;
+    }
+    .brand img {
+      width: 54px;
+      height: 54px;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+    .brand strong {
+      display: block;
+      font-family: "Modak", system-ui;
+      font-size: 32px;
+      font-weight: 400;
+      line-height: 0.95;
+    }
+    .brand span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .top-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .pill-link {
+      min-height: 44px;
+      padding: 0 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 900;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      transition: 0.22s ease;
+    }
+    .pill-link.primary {
+      color: #081006;
+      background: linear-gradient(180deg, #8cf24b, #67d12d);
+      border-color: transparent;
+      box-shadow: 0 14px 28px rgba(123, 225, 59, 0.24);
+    }
+    .pill-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(123, 225, 59, 0.18);
+    }
+    .hero {
+      margin-bottom: 28px;
+    }
+    .eyebrow {
+      color: #a5f36f;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 720px;
+      margin: 10px 0 14px;
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 0.95;
+      font-family: "Modak", system-ui;
+      font-weight: 400;
+    }
+    .intro {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.65;
+    }
+    .notice {
+      margin: 28px 0;
+      padding: 18px 20px;
+      border-radius: 22px;
+      color: rgba(255, 255, 255, 0.86);
+      background: rgba(123, 225, 59, 0.11);
+      border: 1px solid rgba(123, 225, 59, 0.24);
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.6;
+    }
+    .content {
+      display: grid;
+      gap: 18px;
+    }
+    .policy-card {
+      padding: 26px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, var(--glass), rgba(255, 255, 255, 0.055));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+    .policy-card h2 {
+      margin-bottom: 12px;
+      color: #ffffff;
+      font-size: 22px;
+      font-weight: 900;
+    }
+    .policy-card p,
+    .policy-card li {
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.7;
+    }
+    .policy-card ul {
+      padding-left: 20px;
+    }
+    .policy-card a {
+      color: #a5f36f;
+      font-weight: 900;
+      text-decoration: none;
+    }
+    .policy-card a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 640px) {
+      .page {
+        padding: 22px 16px 42px;
+      }
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 32px;
+      }
+      .top-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .pill-link {
+        flex: 1;
+      }
+      .policy-card {
+        padding: 22px;
+        border-radius: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <a href="index.html" class="brand" aria-label="Go to HAZUMI home">
+        <img src="images/logo.png" alt="Hazumi logo">
+        <div>
+          <strong>HAZUMI</strong>
+          <span>Momentum starts today!</span>
+        </div>
+      </a>
+      <nav class="top-actions" aria-label="Policy navigation">
+        <a href="privacy.html" class="pill-link">Privacy Policy</a>
+        <a href="signup.php" class="pill-link primary">Back to Sign up</a>
+      </nav>
+    </header>
+    <section class="hero">
+      <div class="eyebrow">Last updated: July 28, 2026</div>
+      <h1>Terms of Service</h1>
+      <p class="intro">
+        These terms explain how you may use HAZUMI, a productivity website for
+        tracking habits, todos, notes, calendar items, and time blocks.
+      </p>
+    </section>
+    <div class="notice">
+      This is a starter terms page for the HAZUMI project. If HAZUMI is used as
+      a public commercial service, review these terms with a qualified legal
+      professional before launch.
+    </div>
+    <section class="content" aria-label="Terms content">
+      <article class="policy-card">
+        <h2>1. Acceptance</h2>
+        <p>
+          By creating an account or using HAZUMI, you agree to these Terms of
+          Service and to the Privacy Policy. If you do not agree, please do not
+          use the website.
+        </p>
+      </article>
+      <article class="policy-card">
+        <h2>2. Your Account</h2>
+        <ul>
+          <li>You are responsible for the information you provide during sign up.</li>
+          <li>You should keep your password private and use a secure password.</li>
+          <li>You are responsible for activity that happens while you are logged in.</li>
+        </ul>
+      </article>
+      <article class="policy-card">
+        <h2>3. Use of HAZUMI</h2>
+        <p>
+          HAZUMI is intended for personal productivity and self-management. You
+          agree not to misuse the website, attempt to break its security, access
+          another user's account, or upload content that is unlawful or harmful.
+        </p>
+      </article>
+      <article class="policy-card">
+        <h2>4. Your Content</h2>
+        <p>
+          You keep ownership of the tasks, notes, habits, calendar entries, and
+          other content you add to HAZUMI. You give HAZUMI permission to store
+          and display that content only so the website can provide its features.
+        </p>
+      </article>
+      <article class="policy-card">
+        <h2>5. Availability</h2>
+        <p>
+          HAZUMI may be updated, interrupted, or unavailable from time to time.
+          We will try to keep the experience reliable, but we cannot guarantee
+          that every feature will always be available or error-free.
+        </p>
+      </article>
+      <article class="policy-card">
+        <h2>6. Changes</h2>
+        <p>
+          These terms may be updated as HAZUMI grows. The updated date at the top
+          of this page will change when meaningful edits are made.
+        </p>
+      </article>
+      <article class="policy-card">
+        <h2>7. Contact</h2>
+        <p>
+          Questions about these terms can be sent to the HAZUMI project owner or
+          website administrator.
+        </p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
