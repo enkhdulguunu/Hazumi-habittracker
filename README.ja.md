@@ -66,32 +66,34 @@ Hazumi は、日々の生産性データを1つの場所で整理するための
 
 ## ディレクトリ構成
 
+```text
 Hazumi/
 ├── api/
-│   ├── auth/          # ログイン、登録、ログアウト、パスワードリセット、ユーザー取得 API
-│   ├── calendar/      # カレンダー予定 API とダッシュボード枠更新
-│   ├── habits/        # 習慣と習慣ログ API
-│   ├── notes/         # ノート CRUD API
-│   ├── timeblocks/    # タイムブロック API
-│   ├── todos/         # To-do CRUD と一括操作 API
-│   └── common.php     # 共通 JSON/API ヘルパーとテーブル作成ヘルパー
-├── assets/js/         # ページ別 JavaScript ファイル
+│   ├── auth/
+│   ├── calendar/
+│   ├── habits/
+│   ├── notes/
+│   ├── timeblocks/
+│   ├── todos/
+│   └── common.php
+├── assets/js/
 ├── config/
-│   └── database.php   # PDO データベース接続設定
-├── images/            # ランディング画像、ロゴ、サイドバーアイコン
+│   └── database.php
+├── images/
 ├── sql/
-│   ├── schema.sql     # メインのデータベーススキーマ
-├── index.html         # 公開ランディングページ
-├── login.php          # ログインページ
-├── signup.php         # 登録ページ
-├── dashboard.php      # ログイン後のダッシュボード
-├── habittracker.html  # 習慣トラッカー詳細ページ
-├── todolist.html      # To-do リスト詳細ページ
-├── calendar.html      # カレンダー詳細ページ
-├── notes.html         # ノートページ
-├── setting.php        # アカウント設定ページ
-├── terms.html         # 利用規約ページ
-└── privacy.html       # プライバシーポリシーページ
+│   └── schema.sql
+├── index.html
+├── login.php
+├── signup.php
+├── dashboard.php
+├── habittracker.html
+├── todolist.html
+├── calendar.html
+├── notes.html
+├── setting.php
+├── terms.html
+└── privacy.html
+```
 
 ## 公開サイトの使い方
 
