@@ -66,32 +66,34 @@ The current implementation mainly supports:
 
 ## Directory Structure
 
+```text
 Hazumi/
 ├── api/
-│   ├── auth/          # Login, registration, logout, password reset, user API
-│   ├── calendar/      # Calendar event APIs and dashboard slot update
-│   ├── habits/        # Habit and habit log APIs
-│   ├── notes/         # Notes CRUD API
-│   ├── timeblocks/    # Time-block API
-│   ├── todos/         # To-do CRUD and bulk action API
-│   └── common.php     # Shared JSON/API helpers and table creation helpers
-├── assets/js/         # Page-specific JavaScript files
+│   ├── auth/
+│   ├── calendar/
+│   ├── habits/
+│   ├── notes/
+│   ├── timeblocks/
+│   ├── todos/
+│   └── common.php
+├── assets/js/
 ├── config/
-│   └── database.php   # PDO database connection configuration
-├── images/            # Landing page images, logo, and sidebar icons
+│   └── database.php
+├── images/
 ├── sql/
-│   └── schema.sql     # Main database schema
-├── index.html         # Public landing page
-├── login.php          # Login page
-├── signup.php         # Registration page
-├── dashboard.php      # Logged-in dashboard
-├── habittracker.html  # Habit tracker page
-├── todolist.html      # To-do list page
-├── calendar.html      # Calendar page
-├── notes.html         # Notes page
-├── setting.php        # Account settings page
-├── terms.html         # Terms page
-└── privacy.html       # Privacy policy page
+│   └── schema.sql
+├── index.html
+├── login.php
+├── signup.php
+├── dashboard.php
+├── habittracker.html
+├── todolist.html
+├── calendar.html
+├── notes.html
+├── setting.php
+├── terms.html
+└── privacy.html
+```
 
 ## How to Use the Live Site
 
